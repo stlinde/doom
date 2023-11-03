@@ -15,9 +15,9 @@
 ;;      directory (for easy access to its source code).
 
 (doom! :input
-
        :completion
-       company           ; the ultimate code completion backend
+       (company
+        +childframe)           ; the ultimate code completion backend
        vertico           ; the search engine of the future
 
        :ui
@@ -36,7 +36,7 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       ;;tabs              ; a tab bar for Emacs
+       tabs              ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
@@ -190,4 +190,9 @@
 
        :config
        ;;literate
-       (default +bindings +smartparens))
+       (default +bindings +smartparens)
+
+       :shl
+       appearance
+       defaults
+       gtd)
