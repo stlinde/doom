@@ -190,9 +190,10 @@
 
        :config
        ;;literate
-       (default +bindings +smartparens)
+       (default +smartparens)
 
        :shl
        appearance
        defaults
+       bindings
        gtd)
