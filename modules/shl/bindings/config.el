@@ -567,3 +567,11 @@
                  "C-a C-f" #'+fold/close-all
                  "C-u"     #'+fold/open
                  "C-a C-u" #'+fold/open-all)))
+
+;; Add keybindings for easy capture and agenda
+(map! (:when (modulep! :shl gtd)
+        "C-c c" #'org-capture
+        "C-c a" #'org-agenda))
+
+;; Add keybindings for Avy
+(map! "M-j" #'avy-goto-char-timer)
