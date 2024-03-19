@@ -91,7 +91,8 @@ This file determines what modules are loaded from the Doom emacs module set.
 
 #+name: doom-completion
 #+begin_src emacs-lisp
-company             ; the ultimate code completion backend
+(company
+ +childframe)       ; the ultimate code completion backend
 (vertico
  +icons)            ; the search engine of the future
 ;;helm              ; the *other* search engine for love and life
@@ -115,8 +116,13 @@ company             ; the ultimate code completion backend
 #+name: config-completion-company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay 0.25
+  (setq company-idle-delay 0
         company-minimum-prefix-length 1))
+
+(map! :after company
+      :map company-active-map
+      "C-y" #'company-complete-selection
+      [return] nil)
 
 (setq-default history-length 1000
               prescient-history-length 1000)
@@ -209,7 +215,7 @@ zen                 ; distraction-free coding or writing
 #+begin_src emacs-lisp
 ;; (setq doom-font (font-spec :family "Iosevka Comfy" :size 13 :weight 'medium)
 ;;      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 13))
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14 :weight 'medium)
+(setq doom-font (font-spec :family "RobotoMono Nerd Font" :size 14 :weight 'medium)
      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14))
 #+end_src
 
