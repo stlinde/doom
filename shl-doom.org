@@ -62,6 +62,10 @@ This file determines what modules are loaded from the Doom emacs module set.
 
 *** 1.1.2 - ~package.el~
 
+#+begin_src emacs-lisp :tangle "packages.el"
+;;; package.el --- -*- lexical-binding: t -*-
+#+end_src
+
 
 ** 1.2 - Input
 
@@ -76,7 +80,6 @@ This file determines what modules are loaded from the Doom emacs module set.
 #+end_src
 
 *** 1.2.2 - Packages
-
 *** 1.2.3 - Configuration
 
 #+begin_src emacs-lisp :tangle "config.el"
@@ -84,7 +87,6 @@ This file determines what modules are loaded from the Doom emacs module set.
 #+end_src
 
 ** 1.3 - Completion
-
 *** 1.3.1 - Doom Modules
 
 #+name: doom-completion
@@ -97,26 +99,49 @@ company             ; the ultimate code completion backend
 ;;ivy               ; a search engine for love and life
 #+end_src
 
-** 1.4 - UI
+*** 1.3.2 - Packages
 
+*** 1.3.3 - Configuration
+
+#+begin_src emacs-lisp :tangle "config.el" :noweb no-export :noweb-ref none
+;; [[ Doom - Completion ]]
+
+;; Company
+<<config-completion-company>>
+#+end_src
+
+**** 1.3.3.1 - Company
+
+#+name: config-completion-company
+#+begin_src emacs-lisp
+(after! company
+  (setq company-idle-delay 0.25
+        company-minimum-prefix-length 1))
+
+(setq-default history-length 1000
+              prescient-history-length 1000)
+
+#+end_src
+
+** 1.4 - UI
 *** 1.4.1 - Doom Modules
 
 #+name: doom-ui
 #+begin_src emacs-lisp
 ;;deft              ; notational velocity for Emacs
-doom              ; what makes DOOM look the way it does
-doom-dashboard    ; a nifty splash screen for Emacs
+doom                ; what makes DOOM look the way it does
+doom-dashboard      ; a nifty splash screen for Emacs
 ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
 ;;(emoji +unicode)  ; 🙂
-hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
 ;;hydra
 ;;indent-guides     ; highlighted indent columns
-;;ligatures         ; ligatures and symbols to make your code pretty again
+ligatures           ; ligatures and symbols to make your code pretty again
 ;;minimap           ; show a map of the code on the side
-modeline          ; snazzy, Atom-inspired modeline, plus API
+modeline            ; snazzy, Atom-inspired modeline, plus API
 ;;nav-flash         ; blink cursor line after big motions
 ;;neotree           ; a project drawer, like NERDTree for vim
-ophints           ; highlight the region an operation acts on
+ophints             ; highlight the region an operation acts on
 (popup +defaults)   ; tame sudden yet inevitable temporary windows
 ;;tabs              ; a tab bar for Emacs
 ;;treemacs          ; a project drawer, like neotree but cooler
@@ -124,11 +149,16 @@ ophints           ; highlight the region an operation acts on
 (vc-gutter +pretty) ; vcs diff in the fringe
 ;;vi-tilde-fringe   ; fringe tildes to mark beyond EOB
 ;;window-select     ; visually switch windows
-workspaces        ; tab emulation, persistence & separate workspaces
-;;zen               ; distraction-free coding or writing
+workspaces          ; tab emulation, persistence & separate workspaces
+zen                 ; distraction-free coding or writing
 #+end_src
 
 *** 1.4.2 - Packages
+
+#+begin_src emacs-lisp :tangle "packages.el"
+;; [[ UI ]]
+(package! ef-themes)
+#+end_src
 
 *** 1.4.4 - Configuration
 
@@ -155,19 +185,24 @@ workspaces        ; tab emulation, persistence & separate workspaces
 
 #+name: config-ui-theme
 #+begin_src emacs-lisp
-(setq doom-theme 'doom-gruvbox)
+(use-package! ef-themes
+  :config
+  (setq ef-themes-variable-pitch-ui t
+        ef-themes-mixed-fonts t)
+  (ef-themes-select 'ef-autumn))
+
+(setq doom-theme 'ef-autumn)
 #+end_src
 
 **** 1.4.4.3 - Font
 
 #+name: config-ui-font
 #+begin_src emacs-lisp
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 12 :weight 'semi-light)
+(setq doom-font (font-spec :family "Iosevka Comfy" :size 13 :weight 'medium)
      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 13))
 #+end_src
 
 ** 1.5 - Editor
-
 *** 1.5.1 - Doom Modules
 
 #+name: doom-editor
@@ -175,24 +210,23 @@ workspaces        ; tab emulation, persistence & separate workspaces
 ;; (evil +everywhere); come to the dark side, we have cookies
 file-templates       ; auto-snippets for empty files
 fold                 ; (nigh) universal code folding
-;; (format +onsave)  ; automated prettiness
+(format +onsave)     ; automated prettiness
 ;; god               ; run Emacs commands without modifier keys
 ;; lispy             ; vim for lisp, for people who don't like vim
-;; multiple-cursors  ; editing in many places at once
-;; objed             ; text object editing for the innocent
+multiple-cursors     ; editing in many places at once
+objed                ; text object editing for the innocent
 ;; parinfer          ; turn lisp into python, sort of
 ;; rotate-text       ; cycle region at point between text candidates
 snippets             ; my elves. They type so I don't have to
 ;; word-wrap         ; soft wrapping with language-aware indent
 #+end_src
 
-
 *** 1.5.2 - Packages
-
 *** 1.5.3 - Configuration
 
-#+name: config-editor
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "config.el" :noweb no-export :noweb-ref none
+;; [[ Editor ]]
+
 ;; Avy
 <<config-editor-avy>>
 #+end_src
@@ -204,21 +238,26 @@ snippets             ; my elves. They type so I don't have to
 (map! "M-j" #'avy-goto-char-timer)
 #+end_src
 
-** 1.6 - Emacs
+**** 1.5.3.2 - Consult
 
+#+name: config-editor-consult
+#+begin_src emacs-lisp
+(map! "M-s M-o" #'consult-outline)
+#+end_src
+
+** 1.6 - Emacs
 *** 1.6.1 - Doom Modules
 
 #+name: doom-emacs
 #+begin_src emacs-lisp
-dired             ; making dired pretty [functional]
+(dired +icons)    ; making dired pretty [functional]
 electric          ; smarter, keyword-based electric-indent
-ibuffer           ; interactive buffer management
+(ibuffer +icons)  ; interactive buffer management
 undo              ; persistent, smarter undo for your inevitable mistakes
 vc                ; version-control and Emacs, sitting in a tree
 #+end_src
 
 ** 1.7 - Term
-
 *** 1.7.1 - Doom Modules
 
 #+name: doom-term
@@ -230,7 +269,6 @@ vterm               ; the best terminal emulation in Emacs
 #+end_src
 
 ** 1.8 - Checkers
-
 *** 1.8.1 - Doom Modules
 
 #+name: doom-checkers
@@ -241,7 +279,6 @@ syntax              ; tasing you for every semicolon you forget
 #+end_src
 
 ** 1.9 - Tools
-
 *** 1.9.1 - Doom Modules
 
 #+name: doom-tools
@@ -255,12 +292,12 @@ syntax              ; tasing you for every semicolon you forget
 ;;editorconfig      ; let someone else argue about tabs vs spaces
 ;;ein               ; tame Jupyter notebooks with emacs
 (eval +overlay)     ; run code, run (also, repls)
-lookup              ; navigate your code and its documentation
+(lookup +docsets)   ; navigate your code and its documentation
 lsp                 ; M-x vscode
 magit               ; a git porcelain for Emacs
 ;;make              ; run make tasks from Emacs
 ;;pass              ; password manager for nerds
-;;pdf               ; pdf enhancements
+pdf                 ; pdf enhancements
 ;;prodigy           ; FIXME managing external services & code builders
 ;;rgb               ; creating color strings
 ;;taskrunner        ; taskrunner for all your projects
@@ -271,7 +308,6 @@ tree-sitter         ; syntax and parsing, sitting in a tree...
 #+end_src
 
 ** 1.10 - OS
-
 *** 1.10.1 - Doom Modules
 
 #+name: doom-os
@@ -281,7 +317,6 @@ tree-sitter         ; syntax and parsing, sitting in a tree...
 #+end_src
 
 ** 1.11 - Lang
-
 *** 1.11.1 - Doom Modules
 
 #+name: doom-lang
@@ -326,8 +361,7 @@ markdown            ; writing docs for people to ignore
 ;;nim               ; python + lisp at the speed of c
 ;;nix               ; I hereby declare "nix geht mehr!"
 ;;ocaml             ; an objective camel
-(org
- +pretty)           ; organize your plain life in plain text
+(org +pretty)       ; organize your plain life in plain text
 ;;php               ; perl's insecure younger brother
 ;;plantuml          ; diagrams for confusing people more
 ;;purescript        ; javascript, but functional
@@ -357,7 +391,6 @@ sh                  ; she sells {ba,z,fi}sh shells on the C xor
 #+end_src
 
 ** 1.12 - Email
-
 *** 1.12.1 - Doom Modules
 
 #+name: doom-email
@@ -368,7 +401,6 @@ sh                  ; she sells {ba,z,fi}sh shells on the C xor
 #+end_src
 
 ** 1.13 - App
-
 *** 1.13.1 - Doom Modules
 
 #+name: doom-app
@@ -382,7 +414,6 @@ sh                  ; she sells {ba,z,fi}sh shells on the C xor
 #+end_src
 
 ** 1.14 - Config
-
 *** 1.14.1 - Doom Modules
 
 #+name: doom-config
@@ -391,8 +422,94 @@ sh                  ; she sells {ba,z,fi}sh shells on the C xor
 (default +bindings +smartparens)
 #+end_src
 
-** 1.15 - Org
+* 2 - Personal Configuration
 
-*** 1.15.1 - Packages
+** 2.1 - Base
 
-*** 1.15.2 - Configuration
+#+begin_src emacs-lisp :tangle "config.el" :noweb no-export :noweb-ref none
+;; [[ Personal - Base ]]
+
+;; Information
+<<config-personal-information>>
+
+;; Defaults
+<<config-personal-defaults>>
+
+;; Windows
+<<config-personal-windows>>
+#+end_src
+
+*** 2.1.1 - Personal Information
+
+#+name: config-personal-information
+#+begin_src emacs-lisp
+(setq user-full-name "Sebastian Hempel Linde"
+      user-mail-address "sebastian@hempellinde.com")
+#+end_src
+
+*** 2.1.2 - Defaults
+
+#+name: config-personal-defaults
+#+begin_src emacs-lisp
+(setq-default delete-by-moving-to-trash t                   ; Move deleted files to trash
+              x-stretch-cursor t)                           ; Make cursor fit glyph width
+
+(display-time-mode 1)                                       ; Display time in modeline
+(global-subword-mode 1)                                     ; Iterate through CamelCase words
+
+;;; Battery
+(require 'battery)
+(when (and battery-status-function
+         (not (equal (alist-get ?L (funcall battery-status-function))
+                     "N/A")))
+    (display-battery-mode 1))
+
+#+end_src
+
+*** 2.1.3 - Windows
+
+#+name: config-personal-windows
+#+begin_src emacs-lisp
+(defun hsplit-last-buffer ()
+  "Focus to the last created horizontal window"
+  (interactive)
+  (split-window-vertically)
+  (other-window 1))
+
+(defun vsplit-last-buffer ()
+  "Focus to the last created vertical window"
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1))
+
+(map! "C-x 2" #'hsplit-last-buffer
+      "C-x 3" #'vsplit-last-buffer)
+
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(vsplit-last-buffer hsplit-last-buffer)
+  (consult-buffer))
+#+end_src
+
+** 2.2 - Org
+
+*** 2.2.1 - Packages
+
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! org-modern)
+#+end_src
+
+*** 2.2.2 - Configuration
+
+#+begin_src emacs-lisp :tangle "config.el" :noweb no-export :noweb-ref none
+;; [[ Personal - Org ]]
+
+;; Org-modern
+#+end_src
+
+#+RESULTS:
+
+**** 2.2.2.1 - Org Modern
+
+#+name: shl-org-modern
+#+begin_src emacs-lisp
+#+end_src
