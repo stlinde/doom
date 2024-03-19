@@ -158,6 +158,7 @@ zen                 ; distraction-free coding or writing
 #+begin_src emacs-lisp :tangle "packages.el"
 ;; [[ UI ]]
 (package! ef-themes)
+(package! modus-themes)
 #+end_src
 
 *** 1.4.4 - Configuration
@@ -185,21 +186,31 @@ zen                 ; distraction-free coding or writing
 
 #+name: config-ui-theme
 #+begin_src emacs-lisp
+(use-package! modus-themes
+  :config
+  (setq modus-themes-custom-auto-reload nil
+        modus-themes-mixed-fonts t
+        modus-themes-variable-pitch-ui t
+        modus-themes-italic-constructs t
+        modus-themes-completions '((t . (extrabold)))
+        modus-themes-prompts '(extrabold)))
+
 (use-package! ef-themes
   :config
   (setq ef-themes-variable-pitch-ui t
-        ef-themes-mixed-fonts t)
-  (ef-themes-select 'ef-autumn))
+        ef-themes-mixed-fonts t))
 
-(setq doom-theme 'ef-autumn)
+(setq doom-theme 'modus-vivendi-tinted)
 #+end_src
 
 **** 1.4.4.3 - Font
 
 #+name: config-ui-font
 #+begin_src emacs-lisp
-(setq doom-font (font-spec :family "Iosevka Comfy" :size 13 :weight 'medium)
-     doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 13))
+;; (setq doom-font (font-spec :family "Iosevka Comfy" :size 13 :weight 'medium)
+;;      doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 13))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14 :weight 'medium)
+     doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14))
 #+end_src
 
 ** 1.5 - Editor
@@ -214,7 +225,7 @@ fold                 ; (nigh) universal code folding
 ;; god               ; run Emacs commands without modifier keys
 ;; lispy             ; vim for lisp, for people who don't like vim
 multiple-cursors     ; editing in many places at once
-objed                ; text object editing for the innocent
+;; objed             ; text object editing for the innocent
 ;; parinfer          ; turn lisp into python, sort of
 ;; rotate-text       ; cycle region at point between text candidates
 snippets             ; my elves. They type so I don't have to
