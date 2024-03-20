@@ -116,7 +116,7 @@ This file determines what modules are loaded from the Doom emacs module set.
 #+name: config-completion-company
 #+begin_src emacs-lisp
 (after! company
-  (setq company-idle-delay 0
+  (setq company-idle-delay 0.25
         company-minimum-prefix-length 1))
 
 (map! :after company
@@ -378,7 +378,7 @@ markdown            ; writing docs for people to ignore
 ;;nim               ; python + lisp at the speed of c
 ;;nix               ; I hereby declare "nix geht mehr!"
 ;;ocaml             ; an objective camel
-(org +pretty)       ; organize your plain life in plain text
+org       ; organize your plain life in plain text
 ;;php               ; perl's insecure younger brother
 ;;plantuml          ; diagrams for confusing people more
 ;;purescript        ; javascript, but functional
@@ -521,6 +521,7 @@ sh                  ; she sells {ba,z,fi}sh shells on the C xor
 ;; [[ Personal - Org ]]
 
 ;; Org-modern
+<<shl-org-modern>>
 #+end_src
 
 #+RESULTS:
@@ -529,4 +530,75 @@ sh                  ; she sells {ba,z,fi}sh shells on the C xor
 
 #+name: shl-org-modern
 #+begin_src emacs-lisp
+(use-package! org-modern
+  :hook (org-mode . org-modern-mode)
+  :config
+  (setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+        org-modern-table-vertical 1
+        org-modern-table-horizontal 0.2
+        org-modern-list '((43 . "➤")
+                          (45 . "–")
+                          (42 . "•"))
+        org-modern-todo-faces
+        '(("TODO" :inverse-video t :inherit org-todo)
+          ("PROJ" :inverse-video t :inherit +org-todo-project)
+          ("STRT" :inverse-video t :inherit +org-todo-active)
+          ("[-]"  :inverse-video t :inherit +org-todo-active)
+          ("HOLD" :inverse-video t :inherit +org-todo-onhold)
+          ("WAIT" :inverse-video t :inherit +org-todo-onhold)
+          ("[?]"  :inverse-video t :inherit +org-todo-onhold)
+          ("KILL" :inverse-video t :inherit +org-todo-cancel)
+          ("NO"   :inverse-video t :inherit +org-todo-cancel))
+        org-modern-footnote
+        (cons nil (cadr org-script-display))
+        org-modern-block-fringe nil
+        org-modern-block-name
+        '((t . t)
+          ("src" "»" "«")
+          ("example" "»–" "–«")
+          ("quote" "❝" "❞")
+          ("export" "⏩" "⏪"))
+        org-modern-progress nil
+        org-modern-priority nil
+        org-modern-horizontal-rule (make-string 36 ?─)
+        org-modern-keyword
+        '((t . t)
+          ("title" . "𝙏")
+          ("subtitle" . "𝙩")
+          ("author" . "𝘼")
+          ("email" . #("" 0 1 (display (raise -0.14))))
+          ("date" . "𝘿")
+          ("property" . "☸")
+          ("options" . "⌥")
+          ("startup" . "⏻")
+          ("macro" . "𝓜")
+          ("bind" . #("" 0 1 (display (raise -0.1))))
+          ("bibliography" . "")
+          ("print_bibliography" . #("" 0 1 (display (raise -0.1))))
+          ("cite_export" . "⮭")
+          ("print_glossary" . #("ᴬᶻ" 0 1 (display (raise -0.1))))
+          ("glossary_sources" . #("" 0 1 (display (raise -0.14))))
+          ("include" . "⇤")
+          ("setupfile" . "⇚")
+          ("html_head" . "🅷")
+          ("html" . "🅗")
+          ("latex_class" . "🄻")
+          ("latex_class_options" . #("🄻" 1 2 (display (raise -0.14))))
+          ("latex_header" . "🅻")
+          ("latex_header_extra" . "🅻⁺")
+          ("latex" . "🅛")
+          ("beamer_theme" . "🄱")
+          ("beamer_color_theme" . #("🄱" 1 2 (display (raise -0.12))))
+          ("beamer_font_theme" . "🄱𝐀")
+          ("beamer_header" . "🅱")
+          ("beamer" . "🅑")
+          ("attr_latex" . "🄛")
+          ("attr_html" . "🄗")
+          ("attr_org" . "⒪")
+          ("call" . #("" 0 1 (display (raise -0.15))))
+          ("name" . "⁍")
+          ("header" . "›")
+          ("caption" . "☰")
+          ("results" . "🠶")))
+  (custom-set-faces! '(org-modern-statistics :inherit org-checkbox-statistics-todo)))
 #+end_src
