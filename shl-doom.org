@@ -179,6 +179,9 @@ zen                 ; distraction-free coding or writing
 
 ;; Font
 <<config-ui-font>>
+
+;; Splash Screen
+<<config-ui-splash>>
 #+end_src
 
 **** 1.4.4.1 - General
@@ -206,7 +209,7 @@ zen                 ; distraction-free coding or writing
   (setq ef-themes-variable-pitch-ui t
         ef-themes-mixed-fonts t))
 
-(setq doom-theme 'modus-vivendi-tinted)
+(setq doom-theme 'doom-tokyo-night)
 #+end_src
 
 **** 1.4.4.3 - Font
@@ -218,6 +221,13 @@ zen                 ; distraction-free coding or writing
 (setq doom-font (font-spec :family "RobotoMono Nerd Font" :size 14 :weight 'medium)
       doom-variable-pitch-font (font-spec :family "Iosevka Comfy Duo" :size 14)
       doom-unicode-font (font-spec :family "JuliaMono Nerd Font" :size 14))
+#+end_src
+
+**** 1.4.4.4 - Splash Screen
+
+#+name: config-ui-splash
+#+begin_src emacs-lisp
+(setq fancy-splash-image (concat doom-private-dir "doom-banners/splashes/emacs/emacs-e-logo.png"))
 #+end_src
 
 ** 1.5 - Editor
